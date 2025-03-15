@@ -43,7 +43,7 @@ const PlanMechanicsSimulator = () => {
     }
   };
 
-  const resetCurriculum = () => {
+  const resetPlanMilestones = () => {
     setMilestones([
       { id: 1, name: 'Milestone 1', type: 'milestone', state: 'unlocked', optional: false },
       { id: 2, name: 'Milestone 2', type: 'milestone', state: 'locked', optional: true },
@@ -69,7 +69,7 @@ const PlanMechanicsSimulator = () => {
         handleDateChange={handleDateChange}
         addMilestone={addMilestone}
         handleKeyPress={handleKeyPress}
-        resetCurriculum={resetCurriculum}
+        resetPlanMilestones={resetPlanMilestones}
       />
       
       <MilestoneList

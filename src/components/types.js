@@ -10,7 +10,7 @@ export const MilestoneShape = PropTypes.shape({
 
 export const CommunicationShape = PropTypes.shape({
   id: PropTypes.number.isRequired,
-  type: PropTypes.oneOf(['curriculum_start', 'milestone_unlocked', 'milestone_unlocked_followup']).isRequired,
+  type: PropTypes.oneOf(['plan_start', 'milestone_unlocked', 'milestone_unlocked_followup']).isRequired,
   milestone: PropTypes.oneOfType([MilestoneShape, PropTypes.null]),
   date: PropTypes.instanceOf(Date).isRequired,
   description: PropTypes.string.isRequired

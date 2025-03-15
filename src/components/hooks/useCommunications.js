@@ -6,8 +6,8 @@ export const useCommunications = (startDate) => {
 
   const getCommunicationDescription = (type, milestone, daysOffset) => {
     switch(type) {
-      case 'curriculum_start':
-        return 'Curriculum begins';
+      case 'plan_start':
+        return 'Plan begins';
       case 'milestone_unlocked':
         return `${milestone.name} unlocked`;
       case 'milestone_unlocked_followup':
