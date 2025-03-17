@@ -38,4 +38,10 @@ export const getTypeIcon = (type) => {
   return type === 'session' 
     ? <span className="text-blue-500">📝</span> 
     : <span className="text-purple-500">🏆</span>;
+};
+
+export const UNLOCK_STRATEGIES = {
+  BY_DATE: 'BY_DATE',
+  BY_COMPLETION: 'BY_COMPLETION',
+  BY_BOTH: 'BY_BOTH'
 }; 
