@@ -10,6 +10,7 @@ import { UNLOCK_STRATEGIES } from './utils';
 import { useMilestones } from './hooks/useMilestones';
 import { useCommunications } from './hooks/useCommunications';
 import { useUnlockStrategies } from './hooks/useUnlockStrategies';
+import { useMilestoneCommunications } from './hooks/useMilestoneCommunications';
 import { initialUnlockStrategy } from './data/seeds';
 
 const PlanMechanicsSimulator = () => {
@@ -25,9 +26,11 @@ const PlanMechanicsSimulator = () => {
   
   const { communications, addCommunication, resetCommunications } = useCommunications(startDate);
   
-  const wrappedAddCommunication = useCallback((type, milestone, daysOffset = 0) => {
-    addCommunication(type, milestone, daysOffset, currentDate);
+  const wrappedAddCommunication = useCallback((type, milestone, daysOffset = 0, options = {}) => {
+    addCommunication(type, milestone, daysOffset, options, currentDate);
   }, [addCommunication, currentDate]);
+
+  const { handleMilestoneStateChange } = useMilestoneCommunications(wrappedAddCommunication);
 
   const {
     milestones,
@@ -43,13 +46,14 @@ const PlanMechanicsSimulator = () => {
     changeType,
     toggleOptional,
     removeMilestone
-  } = useMilestones(wrappedAddCommunication);
+  } = useMilestones(handleMilestoneStateChange);
 
   const { updateMilestoneStates, changeState: strategyChangeState } = useUnlockStrategies(
     milestones,
     setMilestones,
     currentDate,
-    unlockStrategy
+    unlockStrategy,
+    handleMilestoneStateChange
   );
 
   // Wrap the original changeState to use strategy-based state changes

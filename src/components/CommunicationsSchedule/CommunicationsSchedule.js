@@ -38,9 +38,7 @@ const CommunicationsSchedule = ({ communications, startDate, currentDate }) => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {comm.type === 'plan_start' ? 'Plan Start' : 
-                        comm.type === 'milestone_unlocked' ? 'Milestone Unlocked' :
-                        comm.type === 'milestone_unlocked_followup' ? 'Timed Follow-up' : 
-                        comm.type}
+                        comm.triggerEvent ? comm.triggerEvent.name : 'N/A'}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {comm.description}
