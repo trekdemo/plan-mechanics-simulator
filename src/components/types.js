@@ -5,7 +5,9 @@ export const MilestoneShape = PropTypes.shape({
   name: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['milestone', 'session']).isRequired,
   state: PropTypes.oneOf(['locked', 'unlocked', 'completed']).isRequired,
-  optional: PropTypes.bool.isRequired
+  optional: PropTypes.bool.isRequired,
+  startDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date)
 });
 
 export const CommunicationShape = PropTypes.shape({

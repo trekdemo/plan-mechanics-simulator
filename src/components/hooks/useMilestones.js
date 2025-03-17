@@ -6,6 +6,12 @@ export const useMilestones = (addCommunication) => {
   const [newMilestoneName, setNewMilestoneName] = useState('');
   const [newMilestoneType, setNewMilestoneType] = useState('milestone');
   const [newMilestoneOptional, setNewMilestoneOptional] = useState(false);
+  const [newMilestoneStartDate, setNewMilestoneStartDate] = useState(new Date());
+  const [newMilestoneEndDate, setNewMilestoneEndDate] = useState(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  });
 
   const updateMilestoneStates = (updatedMilestones) => {
     const result = [...updatedMilestones];
@@ -143,6 +149,10 @@ export const useMilestones = (addCommunication) => {
     setNewMilestoneType,
     newMilestoneOptional,
     setNewMilestoneOptional,
+    newMilestoneStartDate,
+    setNewMilestoneStartDate,
+    newMilestoneEndDate,
+    setNewMilestoneEndDate,
     addMilestone,
     changeState,
     changeType,

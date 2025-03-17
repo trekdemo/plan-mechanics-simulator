@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getStateColor, getTypeIcon } from '../utils';
+import { getStateColor, getTypeIcon, formatDateForInput } from '../utils';
 import { MilestoneShape } from '../types';
 
 const MilestoneList = ({
@@ -8,7 +8,9 @@ const MilestoneList = ({
   changeState,
   changeType,
   toggleOptional,
-  removeMilestone
+  removeMilestone,
+  changeStartDate,
+  changeEndDate
 }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow">
@@ -70,6 +72,27 @@ const MilestoneList = ({
                       <span className="text-sm">Optional</span>
                     </label>
                   </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center">
+                      <span className="text-sm mr-2">Start:</span>
+                      <input
+                        type="date"
+                        value={formatDateForInput(milestone.startDate)}
+                        onChange={(e) => changeStartDate(milestone.id, new Date(e.target.value))}
+                        className="p-1 border rounded text-sm"
+                      />
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-sm mr-2">End:</span>
+                      <input
+                        type="date"
+                        value={formatDateForInput(milestone.endDate)}
+                        onChange={(e) => changeEndDate(milestone.id, new Date(e.target.value))}
+                        className="p-1 border rounded text-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               
@@ -93,7 +116,9 @@ MilestoneList.propTypes = {
   changeState: PropTypes.func.isRequired,
   changeType: PropTypes.func.isRequired,
   toggleOptional: PropTypes.func.isRequired,
-  removeMilestone: PropTypes.func.isRequired
+  removeMilestone: PropTypes.func.isRequired,
+  changeStartDate: PropTypes.func.isRequired,
+  changeEndDate: PropTypes.func.isRequired
 };
 
 export default MilestoneList; 
