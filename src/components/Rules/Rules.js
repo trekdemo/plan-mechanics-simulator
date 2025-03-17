@@ -14,7 +14,6 @@ const Rules = () => {
       <ul className="list-disc pl-6 text-sm text-gray-700 space-y-1 text-left">
         <li><strong>States and Progression</strong>
           <ul>
-            <li>Milestones have three states: locked → unlocked → completed</li>
             <li>States can only progress forward, never backward</li>
             <li>Milestones can skip states (e.g., go directly from locked to completed)</li>
           </ul>
@@ -26,17 +25,7 @@ const Rules = () => {
         </li>
         <li><strong>Optional Milestone Rules</strong>
           <ul>
-            <li>They don't block progression to subsequent milestones</li>
-          </ul>
-        </li>
-        <li><strong>Unlocking Logic</strong>
-          <ul>
-            <li>A milestone becomes unlocked when all (non-optional) milestones preceding it are completed</li>
-          </ul>
-        </li>
-        <li><strong>Completion Logic</strong>
-          <ul>
-            <li>A milestone becomes unlocked when all (non-optional) milestones preceding it are completed</li>
+            <li>Optional milestones don't block progression to subsequent milestones</li>
           </ul>
         </li>
         <li><strong>Communications</strong>

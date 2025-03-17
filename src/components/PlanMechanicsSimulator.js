@@ -92,17 +92,69 @@ const PlanMechanicsSimulator = () => {
     const newDate = new Date(dateStr);
     setCurrentDate(newDate);
     
-    if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
+    if ([UNLOCK_STRATEGIES.BY_DATE, UNLOCK_STRATEGIES.BY_BOTH].includes(unlockStrategy)) {
       updateMilestoneStates(newDate);
     }
   }, [unlockStrategy, updateMilestoneStates]);
 
   const handleUnlockStrategyChange = useCallback((newStrategy) => {
+    // Reset current date to today
+    const today = new Date();
+    setCurrentDate(today);
+    
+    // Set the new strategy
     setUnlockStrategy(newStrategy);
-    if (newStrategy === UNLOCK_STRATEGIES.BY_DATE) {
-      updateMilestoneStates(currentDate);
+    
+    // Reset the plan with the new strategy
+    const baseMilestones = [
+      { 
+        id: 1, 
+        name: 'Milestone 1', 
+        type: 'milestone', 
+        state: 'unlocked', 
+        optional: false
+      },
+      { 
+        id: 2, 
+        name: 'Milestone 2', 
+        type: 'milestone', 
+        state: 'locked', 
+        optional: true
+      },
+      { 
+        id: 3, 
+        name: 'Milestone 3', 
+        type: 'milestone', 
+        state: 'locked', 
+        optional: false
+      },
+      { 
+        id: 4, 
+        name: 'Milestone 4', 
+        type: 'milestone', 
+        state: 'locked', 
+        optional: false
+      },
+      { 
+        id: 5, 
+        name: 'Milestone 5', 
+        type: 'milestone', 
+        state: 'locked', 
+        optional: false
+      }
+    ];
+
+    setMilestones(baseMilestones);
+    resetCommunications();
+    
+    // Set dates since we're using a strategy that requires dates
+    updateMilestoneDates(today);
+    
+    // Update milestone states based on the new strategy
+    if ([UNLOCK_STRATEGIES.BY_DATE, UNLOCK_STRATEGIES.BY_BOTH].includes(newStrategy)) {
+      updateMilestoneStates(today);
     }
-  }, [currentDate, updateMilestoneStates]);
+  }, [updateMilestoneDates, updateMilestoneStates, resetCommunications]);
 
   // Initialize dates on component mount
   React.useEffect(() => {
@@ -119,7 +171,7 @@ const PlanMechanicsSimulator = () => {
     nextDay.setDate(nextDay.getDate() + 1);
     setCurrentDate(nextDay);
     
-    if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
+    if ([UNLOCK_STRATEGIES.BY_DATE, UNLOCK_STRATEGIES.BY_BOTH].includes(unlockStrategy)) {
       updateMilestoneStates(nextDay);
     }
   }, [currentDate, unlockStrategy, updateMilestoneStates]);
