@@ -115,11 +115,47 @@ const PlanConfigurations = ({
             </div>
           </div>
 
-          {/* Right Column - Legend */}
-          <div className="text-sm text-gray-600 text-left">
-            <div className="mb-1"><span className="font-medium">Types:</span> 🏆 Milestone, 📝 Session</div>
-            <div className="mb-1"><span className="font-medium">States:</span> 🔴 Locked, 🟡 Unlocked, 🟢 Completed</div>
-            <div><span className="font-medium">Optional:</span> Milestones that are not required for progression</div>
+          {/* Right Column - Comms */}
+          <div>
+            <h3 className="text-lg font-medium mb-3">Comms</h3>
+            <div className="space-y-2">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  disabled
+                  checked
+                />
+                <span className="ml-2 text-sm text-gray-500">Plan Started</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  disabled
+                  checked
+                />
+                <span className="ml-2 text-sm text-gray-500">Milestone Unlocked</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  disabled
+                  checked
+                />
+                <span className="ml-2 text-sm text-gray-500">Milestone Unlocked + 3 days</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  disabled
+                  checked
+                />
+                <span className="ml-2 text-sm text-gray-500">Milestone Unlocked + 7 days</span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
