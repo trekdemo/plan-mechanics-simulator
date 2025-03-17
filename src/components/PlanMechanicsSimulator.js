@@ -9,6 +9,7 @@ import CurrentDateControl from './CurrentDateControl/CurrentDateControl';
 import { UNLOCK_STRATEGIES } from './utils';
 import { useMilestones } from './hooks/useMilestones';
 import { useCommunications } from './hooks/useCommunications';
+import { useUnlockStrategies } from './hooks/useUnlockStrategies';
 import { initialUnlockStrategy } from './data/seeds';
 
 const PlanMechanicsSimulator = () => {
@@ -38,11 +39,23 @@ const PlanMechanicsSimulator = () => {
     newMilestoneOptional,
     setNewMilestoneOptional,
     addMilestone,
-    changeState,
+    changeState: originalChangeState,
     changeType,
     toggleOptional,
     removeMilestone
   } = useMilestones(wrappedAddCommunication);
+
+  const { updateMilestoneStates, changeState: strategyChangeState } = useUnlockStrategies(
+    milestones,
+    setMilestones,
+    currentDate,
+    unlockStrategy
+  );
+
+  // Wrap the original changeState to use strategy-based state changes
+  const changeState = useCallback((id, newState) => {
+    strategyChangeState(id, newState, originalChangeState);
+  }, [strategyChangeState, originalChangeState]);
 
   const shouldAutoSetDates = useCallback((strategy) => {
     return [
@@ -73,31 +86,6 @@ const PlanMechanicsSimulator = () => {
     });
   }, []);
 
-  const updateMilestoneStatesByDate = useCallback((date) => {
-    // Strip time component from the current date for comparison
-    const currentDateStripped = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    
-    setMilestones(prevMilestones => {
-      return prevMilestones.map(milestone => {
-        if (!milestone.startDate) return milestone;
-        
-        // Strip time component from the milestone start date
-        const startDateStripped = new Date(
-          milestone.startDate.getFullYear(),
-          milestone.startDate.getMonth(),
-          milestone.startDate.getDate()
-        );
-        
-        // For BY_DATE strategy, we only change locked -> unlocked based on date
-        // We don't want to affect milestones that are already completed
-        if (milestone.state === 'locked' && startDateStripped <= currentDateStripped) {
-          return { ...milestone, state: 'unlocked' };
-        }
-        return milestone;
-      });
-    });
-  }, []);
-
   const handleDateChange = useCallback((e) => {
     // Add time component and handle timezone properly
     const dateStr = `${e.target.value}T00:00:00`;
@@ -105,16 +93,16 @@ const PlanMechanicsSimulator = () => {
     setCurrentDate(newDate);
     
     if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
-      updateMilestoneStatesByDate(newDate);
+      updateMilestoneStates(newDate);
     }
-  }, [unlockStrategy, updateMilestoneStatesByDate]);
+  }, [unlockStrategy, updateMilestoneStates]);
 
   const handleUnlockStrategyChange = useCallback((newStrategy) => {
     setUnlockStrategy(newStrategy);
     if (newStrategy === UNLOCK_STRATEGIES.BY_DATE) {
-      updateMilestoneStatesByDate(currentDate);
+      updateMilestoneStates(currentDate);
     }
-  }, [currentDate, updateMilestoneStatesByDate]);
+  }, [currentDate, updateMilestoneStates]);
 
   // Initialize dates on component mount
   React.useEffect(() => {
@@ -122,9 +110,19 @@ const PlanMechanicsSimulator = () => {
       updateMilestoneDates(currentDate);
     }
     if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
-      updateMilestoneStatesByDate(currentDate);
+      updateMilestoneStates(currentDate);
     }
   }, []); // Empty dependency array means this runs once on mount
+
+  const handleNextDay = useCallback(() => {
+    const nextDay = new Date(currentDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setCurrentDate(nextDay);
+    
+    if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
+      updateMilestoneStates(nextDay);
+    }
+  }, [currentDate, unlockStrategy, updateMilestoneStates]);
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -196,16 +194,6 @@ const PlanMechanicsSimulator = () => {
       )
     );
   }, []);
-
-  const handleNextDay = useCallback(() => {
-    const nextDay = new Date(currentDate);
-    nextDay.setDate(nextDay.getDate() + 1);
-    setCurrentDate(nextDay);
-    
-    if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
-      updateMilestoneStatesByDate(nextDay);
-    }
-  }, [currentDate, unlockStrategy, updateMilestoneStatesByDate]);
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
