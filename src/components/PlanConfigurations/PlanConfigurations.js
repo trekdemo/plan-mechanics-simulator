@@ -98,12 +98,34 @@ const PlanConfigurations = ({
       </div>
 
       <div className="mt-6 pt-4 border-t border-blue-200">
-        <div className="flex justify-between items-start">
+        <div className="grid grid-cols-2 gap-6">
+          {/* Left Column - Due Dates */}
+          <div>
+            <h3 className="text-lg font-medium mb-3">Due Dates</h3>
+            <div>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  disabled
+                  checked={false}
+                />
+                <span className="ml-2 text-sm text-gray-500">Enable due dates</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Right Column - Legend */}
           <div className="text-sm text-gray-600 text-left">
             <div className="mb-1"><span className="font-medium">Types:</span> 🏆 Milestone, 📝 Session</div>
             <div className="mb-1"><span className="font-medium">States:</span> 🔴 Locked, 🟡 Unlocked, 🟢 Completed</div>
             <div><span className="font-medium">Optional:</span> Milestones that are not required for progression</div>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-6 pt-4 border-t border-blue-200">
+        <div className="flex justify-start">
           <button 
             className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-left"
             onClick={resetPlanMilestones}
