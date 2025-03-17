@@ -7,93 +7,109 @@ const PlanConfigurations = ({
   setUnlockStrategy,
   resetPlanMilestones
 }) => {
-  const handleUnlockStrategyChange = (e) => {
-    setUnlockStrategy(e.target.value);
-  };
-
   return (
-    <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-      <h2 className="text-xl font-semibold mb-3 text-center">Plan Configurations</h2>
+    <div className="mt-6 bg-white p-6 rounded-lg shadow">
+      <h2 className="text-xl font-semibold mb-4">Plan Configurations</h2>
       
-      <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-6">
+        {/* Left Column - Unlocking Strategy */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Unlocking Strategy
-          </label>
+          <h3 className="text-lg font-medium mb-3">Unlocking Strategy</h3>
           <div className="space-y-2">
-            <div className="flex items-start">
+            <label className="flex items-start">
               <input
-                id="unlock-by-date"
-                name="unlockStrategy"
                 type="radio"
-                value={UNLOCK_STRATEGIES.BY_DATE}
-                checked={unlockStrategy === UNLOCK_STRATEGIES.BY_DATE}
-                onChange={handleUnlockStrategyChange}
-                className="mt-1 h-4 w-4 text-blue-600 border-gray-300"
-              />
-              <label htmlFor="unlock-by-date" className="ml-2 block text-sm text-gray-700 text-left">
-                <div className="font-medium">By start date passed</div>
-                <p className="text-gray-500 text-xs mt-1">
-                  Milestones unlock when their start date has passed.
-                </p>
-              </label>
-            </div>
-            
-            <div className="flex items-start">
-              <input
-                id="unlock-by-completion"
-                name="unlockStrategy"
-                type="radio"
-                value={UNLOCK_STRATEGIES.BY_COMPLETION}
+                className="mt-1"
                 checked={unlockStrategy === UNLOCK_STRATEGIES.BY_COMPLETION}
-                onChange={handleUnlockStrategyChange}
-                className="mt-1 h-4 w-4 text-blue-600 border-gray-300"
+                onChange={() => setUnlockStrategy(UNLOCK_STRATEGIES.BY_COMPLETION)}
               />
-              <label htmlFor="unlock-by-completion" className="ml-2 block text-sm text-gray-700 text-left">
-                <div className="font-medium">By completion of all prior non-optional milestones</div>
-                <p className="text-gray-500 text-xs mt-1">
-                  Milestones unlock when all preceding required milestones are completed.
-                </p>
-              </label>
-            </div>
+              <span className="ml-2 text-sm text-left block">
+                By completion of all prior non-optional milestones
+              </span>
+            </label>
             
-            <div className="flex items-start">
+            <label className="flex items-start">
               <input
-                id="unlock-by-both"
-                name="unlockStrategy"
                 type="radio"
-                value={UNLOCK_STRATEGIES.BY_BOTH}
-                checked={unlockStrategy === UNLOCK_STRATEGIES.BY_BOTH}
-                onChange={handleUnlockStrategyChange}
-                className="mt-1 h-4 w-4 text-blue-600 border-gray-300"
+                className="mt-1"
+                checked={unlockStrategy === UNLOCK_STRATEGIES.BY_DATE}
+                onChange={() => setUnlockStrategy(UNLOCK_STRATEGIES.BY_DATE)}
               />
-              <label htmlFor="unlock-by-both" className="ml-2 block text-sm text-gray-700 text-left">
-                <div className="font-medium">By start date passed and completion of all prior non-optional milestones</div>
-                <p className="text-gray-500 text-xs mt-1">
-                  Milestones unlock when both their start date has passed and all preceding required milestones are completed.
-                </p>
-              </label>
-            </div>
+              <span className="ml-2 text-sm text-left block">
+                By start date
+              </span>
+            </label>
+            
+            <label className="flex items-start">
+              <input
+                type="radio"
+                className="mt-1"
+                checked={unlockStrategy === UNLOCK_STRATEGIES.BY_BOTH}
+                onChange={() => setUnlockStrategy(UNLOCK_STRATEGIES.BY_BOTH)}
+              />
+              <span className="ml-2 text-sm text-left block">
+                By start date passed and completion of all prior non-optional milestones
+              </span>
+            </label>
           </div>
         </div>
 
-        <div className="pt-4 border-t border-blue-200">
+        {/* Right Column - Completion Strategy */}
+        <div>
+          <h3 className="text-lg font-medium mb-3">Completion Strategy</h3>
+          <div className="space-y-2">
+            <label className="flex items-start">
+              <input
+                type="radio"
+                className="mt-1"
+                disabled
+                checked={false}
+              />
+              <span className="ml-2 text-sm text-gray-500 text-left block">
+                Complete milestones when all activities are clicked
+              </span>
+            </label>
+            
+            <label className="flex items-start">
+              <input
+                type="radio"
+                className="mt-1"
+                disabled
+                checked={false}
+              />
+              <span className="ml-2 text-sm text-gray-500 text-left block">
+                Complete milestones when all activities are completed
+              </span>
+            </label>
+            
+            <label className="flex items-start">
+              <input
+                type="radio"
+                className="mt-1"
+                disabled
+                checked={false}
+              />
+              <span className="ml-2 text-sm text-gray-500 text-left block">
+                Complete milestones when only assessment activities are completed
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 pt-4 border-t border-blue-200">
+        <div className="flex justify-between items-start">
           <div className="text-sm text-gray-600 text-left">
             <div className="mb-1"><span className="font-medium">Types:</span> 🏆 Milestone, 📝 Session</div>
             <div className="mb-1"><span className="font-medium">States:</span> 🔴 Locked, 🟡 Unlocked, 🟢 Completed</div>
             <div><span className="font-medium">Optional:</span> Milestones that are not required for progression</div>
           </div>
-        </div>
-
-        <div className="pt-4 border-t border-blue-200">
-          <div className="flex justify-start">
-            <button 
-              className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-left"
-              onClick={resetPlanMilestones}
-            >
-              Reset Plan
-            </button>
-          </div>
+          <button 
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-left"
+            onClick={resetPlanMilestones}
+          >
+            Reset Plan
+          </button>
         </div>
       </div>
     </div>
