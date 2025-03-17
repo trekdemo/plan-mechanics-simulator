@@ -1,22 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { UNLOCK_STRATEGIES, formatDateForInput } from '../utils';
+import { UNLOCK_STRATEGIES } from '../utils';
 
 const PlanConfigurations = ({ 
   unlockStrategy, 
   setUnlockStrategy,
-  currentDate,
-  handleDateChange,
   resetPlanMilestones
 }) => {
   const handleUnlockStrategyChange = (e) => {
     setUnlockStrategy(e.target.value);
-  };
-
-  const handleNextDay = () => {
-    const nextDay = new Date(currentDate);
-    nextDay.setDate(nextDay.getDate() + 1);
-    handleDateChange({ target: { value: formatDateForInput(nextDay) } });
   };
 
   return (
@@ -86,25 +78,6 @@ const PlanConfigurations = ({
         </div>
 
         <div className="pt-4 border-t border-blue-200">
-          <div className="flex items-center space-x-2">
-            <label htmlFor="currentDate" className="font-medium text-sm">Current Date:</label>
-            <input 
-              type="date" 
-              id="currentDate"
-              className="p-2 border rounded"
-              value={formatDateForInput(currentDate)}
-              onChange={handleDateChange}
-            />
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded"
-              onClick={handleNextDay}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-
-        <div className="pt-4 border-t border-blue-200">
           <div className="text-sm text-gray-600 text-left">
             <div className="mb-1"><span className="font-medium">Types:</span> 🏆 Milestone, 📝 Session</div>
             <div className="mb-1"><span className="font-medium">States:</span> 🔴 Locked, 🟡 Unlocked, 🟢 Completed</div>
@@ -130,8 +103,6 @@ const PlanConfigurations = ({
 PlanConfigurations.propTypes = {
   unlockStrategy: PropTypes.string.isRequired,
   setUnlockStrategy: PropTypes.func.isRequired,
-  currentDate: PropTypes.instanceOf(Date).isRequired,
-  handleDateChange: PropTypes.func.isRequired,
   resetPlanMilestones: PropTypes.func.isRequired
 };
 
