@@ -1,3 +1,5 @@
+import { UNLOCK_STRATEGIES } from '../utils';
+
 export const initialMilestones = [
   { id: 1, name: 'Milestone 1', type: 'milestone', state: 'unlocked', optional: false },
   { id: 2, name: 'Milestone 2', type: 'milestone', state: 'locked', optional: true },
@@ -6,10 +8,12 @@ export const initialMilestones = [
   { id: 5, name: 'Milestone 5', type: 'milestone', state: 'locked', optional: false }
 ];
 
+export const initialUnlockStrategy = UNLOCK_STRATEGIES.BY_DATE;
+
 export const initialCommunication = (startDate) => ({
   id: 1,
-  type: 'planm_start',
+  type: 'plan_start',
   milestone: null,
   date: startDate,
   description: 'Plan begins'
-}); 
+});

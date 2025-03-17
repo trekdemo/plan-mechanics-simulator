@@ -8,11 +8,12 @@ import PlanConfigurations from './PlanConfigurations/PlanConfigurations';
 import { UNLOCK_STRATEGIES } from './utils';
 import { useMilestones } from './hooks/useMilestones';
 import { useCommunications } from './hooks/useCommunications';
+import { initialUnlockStrategy } from './data/seeds';
 
 const PlanMechanicsSimulator = () => {
   const startDate = new Date();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [unlockStrategy, setUnlockStrategy] = useState(UNLOCK_STRATEGIES.BY_COMPLETION);
+  const [unlockStrategy, setUnlockStrategy] = useState(initialUnlockStrategy);
   const [newMilestoneStartDate, setNewMilestoneStartDate] = useState(new Date());
   const [newMilestoneEndDate, setNewMilestoneEndDate] = useState(() => {
     const tomorrow = new Date();
@@ -71,25 +72,54 @@ const PlanMechanicsSimulator = () => {
     });
   }, []);
 
+  const updateMilestoneStatesByDate = useCallback((date) => {
+    // Strip time component from the current date for comparison
+    const currentDateStripped = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    
+    setMilestones(prevMilestones => {
+      return prevMilestones.map(milestone => {
+        if (!milestone.startDate) return milestone;
+        
+        // Strip time component from the milestone start date
+        const startDateStripped = new Date(
+          milestone.startDate.getFullYear(),
+          milestone.startDate.getMonth(),
+          milestone.startDate.getDate()
+        );
+        
+        // For BY_DATE strategy, we only change locked -> unlocked based on date
+        // We don't want to affect milestones that are already completed
+        if (milestone.state === 'locked' && startDateStripped <= currentDateStripped) {
+          return { ...milestone, state: 'unlocked' };
+        }
+        return milestone;
+      });
+    });
+  }, []);
+
   const handleDateChange = (e) => {
     const newDate = new Date(e.target.value);
     setCurrentDate(newDate);
-    if (shouldAutoSetDates(unlockStrategy)) {
-      updateMilestoneDates(newDate);
+    
+    if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
+      updateMilestoneStatesByDate(newDate);
     }
   };
 
   const handleUnlockStrategyChange = useCallback((newStrategy) => {
     setUnlockStrategy(newStrategy);
-    if (shouldAutoSetDates(newStrategy)) {
-      updateMilestoneDates(currentDate);
+    if (newStrategy === UNLOCK_STRATEGIES.BY_DATE) {
+      updateMilestoneStatesByDate(currentDate);
     }
-  }, [currentDate, updateMilestoneDates, shouldAutoSetDates]);
+  }, [currentDate, updateMilestoneStatesByDate]);
 
   // Initialize dates on component mount
   React.useEffect(() => {
     if (shouldAutoSetDates(unlockStrategy)) {
       updateMilestoneDates(currentDate);
+    }
+    if (unlockStrategy === UNLOCK_STRATEGIES.BY_DATE) {
+      updateMilestoneStatesByDate(currentDate);
     }
   }, []); // Empty dependency array means this runs once on mount
 
@@ -100,7 +130,7 @@ const PlanMechanicsSimulator = () => {
   };
 
   const resetPlanMilestones = () => {
-    const newStrategy = UNLOCK_STRATEGIES.BY_COMPLETION;
+    const newStrategy = initialUnlockStrategy;
     setUnlockStrategy(newStrategy);
     
     const baseMilestones = [

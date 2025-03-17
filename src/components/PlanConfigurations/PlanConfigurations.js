@@ -13,6 +13,12 @@ const PlanConfigurations = ({
     setUnlockStrategy(e.target.value);
   };
 
+  const handleNextDay = () => {
+    const nextDay = new Date(currentDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    handleDateChange({ target: { value: formatDateForInput(nextDay) } });
+  };
+
   return (
     <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
       <h2 className="text-xl font-semibold mb-3 text-center">Plan Configurations</h2>
@@ -80,8 +86,8 @@ const PlanConfigurations = ({
         </div>
 
         <div className="pt-4 border-t border-blue-200">
-          <div className="flex items-center">
-            <label htmlFor="currentDate" className="mr-2 font-medium text-sm">Current Date:</label>
+          <div className="flex items-center space-x-2">
+            <label htmlFor="currentDate" className="font-medium text-sm">Current Date:</label>
             <input 
               type="date" 
               id="currentDate"
@@ -89,6 +95,12 @@ const PlanConfigurations = ({
               value={formatDateForInput(currentDate)}
               onChange={handleDateChange}
             />
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded"
+              onClick={handleNextDay}
+            >
+              Next
+            </button>
           </div>
         </div>
 
