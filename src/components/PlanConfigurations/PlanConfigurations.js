@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { UNLOCK_STRATEGIES } from '../utils';
 
-const PlanConfigurations = ({ 
-  unlockStrategy, 
+const PlanConfigurations = ({
+  unlockStrategy,
   setUnlockStrategy,
   resetPlanMilestones
 }) => {
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow">
       <h2 className="text-xl font-semibold mb-4">Plan Configurations</h2>
-      
+
       <div className="grid grid-cols-2 gap-6">
         {/* Left Column - Unlocking Strategy */}
         <div>
@@ -27,7 +27,7 @@ const PlanConfigurations = ({
                 By completion of all prior non-optional milestones
               </span>
             </label>
-            
+
             <label className="flex items-start">
               <input
                 type="radio"
@@ -39,7 +39,7 @@ const PlanConfigurations = ({
                 By start date
               </span>
             </label>
-            
+
             <label className="flex items-start">
               <input
                 type="radio"
@@ -48,7 +48,18 @@ const PlanConfigurations = ({
                 onChange={() => setUnlockStrategy(UNLOCK_STRATEGIES.BY_BOTH)}
               />
               <span className="ml-2 text-sm text-left block">
-                By start date passed and completion of all prior non-optional milestones
+                By start date passed <i>AND</i> completion of all prior non-optional milestones
+              </span>
+            </label>
+            <label className="flex items-start">
+              <input
+                type="radio"
+                className="mt-1"
+                checked={unlockStrategy === UNLOCK_STRATEGIES.BY_BOTH_OR}
+                onChange={() => setUnlockStrategy(UNLOCK_STRATEGIES.BY_BOTH_OR)}
+              />
+              <span className="ml-2 text-sm text-left block">
+                By start date passed <i>OR</i> completion of all prior non-optional milestones
               </span>
             </label>
           </div>
@@ -69,7 +80,7 @@ const PlanConfigurations = ({
                 Complete milestones when all activities are clicked
               </span>
             </label>
-            
+
             <label className="flex items-start">
               <input
                 type="radio"
@@ -81,7 +92,7 @@ const PlanConfigurations = ({
                 Complete milestones when all activities are completed
               </span>
             </label>
-            
+
             <label className="flex items-start">
               <input
                 type="radio"
@@ -162,7 +173,7 @@ const PlanConfigurations = ({
 
       <div className="mt-6 pt-4 border-t border-blue-200">
         <div className="flex justify-start">
-          <button 
+          <button
             className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-left"
             onClick={resetPlanMilestones}
           >
@@ -180,4 +191,4 @@ PlanConfigurations.propTypes = {
   resetPlanMilestones: PropTypes.func.isRequired
 };
 
-export default PlanConfigurations; 
+export default PlanConfigurations;

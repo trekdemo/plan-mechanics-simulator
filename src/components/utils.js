@@ -1,6 +1,6 @@
 // Date formatting utilities
 export const formatDate = (date) => {
-  return date.toLocaleDateString('en-US', { 
+  return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
@@ -35,13 +35,14 @@ export const getStateEmoji = (state) => {
 };
 
 export const getTypeIcon = (type) => {
-  return type === 'session' 
-    ? <span className="text-blue-500">📝</span> 
+  return type === 'session'
+    ? <span className="text-blue-500">📝</span>
     : <span className="text-purple-500">🏆</span>;
 };
 
 export const UNLOCK_STRATEGIES = {
   BY_DATE: 'BY_DATE',
   BY_COMPLETION: 'BY_COMPLETION',
-  BY_BOTH: 'BY_BOTH'
-}; 
+  BY_BOTH: 'BY_BOTH',
+  BY_BOTH_OR: 'BY_BOTH_OR'
+};
